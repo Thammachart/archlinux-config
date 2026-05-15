@@ -1,0 +1,12 @@
+---
+- name: "{{ it.cmp }}: Create Custom Launcher"
+  become: true
+  template:
+    src: "custom_launcher.j2"
+    dest: "/usr/local/bin/launch-{{ it.cmp }}"
+    mode: "755"
+- name: "{{ it.cmp }}: Create Desktop Entry"
+  become: true
+  template:
+    src: "custom_desktop_entry.j2"
+    dest: "/usr/share/wayland-sessions/{{ it.cmp }}-custom.desktop"

@@ -1,0 +1,5 @@
+- name: Restart {{ ntp_client_systemd_service }}
+  become: true
+  systemd:
+    name: '{{ ntp_client_systemd_service }}'
+    state: restarted

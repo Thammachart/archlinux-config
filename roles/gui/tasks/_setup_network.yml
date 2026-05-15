@@ -1,0 +1,16 @@
+---
+- name: Install GUI-related Network Tools
+  become: true
+  package:
+    name:
+      - network-manager-applet
+      - syncthing
+
+- name: Override nm-applet autostart in compositors
+  become: true
+  lineinfile:
+    path: /etc/xdg/autostart/nm-applet.desktop
+    backrefs: true
+    regexp: "^(NotShowIn=(?!.*niri;).*)$"
+    line: '\1niri;'
+    state: present

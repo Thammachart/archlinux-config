@@ -1,0 +1,10 @@
+#!/bin/sh
+
+source {{ wayland_enablement_path }}
+source {{ load_systemd_envs_path }}
+
+export XDG_SESSION_DESKTOP={{ it.cmp }}
+export XDG_CURRENT_DESKTOP={{ it.cmp }}
+export QT_QPA_PLATFORMTHEME=qt6ct
+
+exec systemd-cat --identifier={{ it.cmp }} {{ it.cmp_exec }} $@

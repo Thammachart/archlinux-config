@@ -1,0 +1,11 @@
+- name: debug local workstation
+  hosts: local
+  tasks:
+    - name: Debug chassis
+      debug:
+        var: ansible_facts["form_factor"] == "Notebook"
+      when: true
+    - name: Debug all facts/variables
+      debug:
+        var: hostvars[inventory_hostname]
+      when: false

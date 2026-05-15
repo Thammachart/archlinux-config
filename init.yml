@@ -1,0 +1,5 @@
+- name: Setup local workstation
+  hosts: local
+  roles:
+    - general
+    - gui

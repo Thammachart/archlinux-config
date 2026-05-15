@@ -1,0 +1,20 @@
+- name: Create {{ timesyncd_config_directory }} directory if not exist
+  become: true
+  file:
+    path: "{{ timesyncd_config_directory }}"
+    state: directory
+    mode: 0755
+- name: Setup NTP Sources
+  become: true
+  template:
+    src: "timesyncd.conf.j2"
+    dest: "{{ timesyncd_config_directory }}/00-servers.conf"
+  notify:
+    - Restart {{ ntp_client_systemd_service }}
+- name: Enable {{ ntp_client_systemd_service }}
+  become: true
+  systemd:
+    name: "{{ ntp_client_systemd_service }}"
+    state: started
+    enabled: true
+    masked: false

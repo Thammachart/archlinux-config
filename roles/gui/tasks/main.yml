@@ -1,0 +1,142 @@
+---
+- name: Install GUI-related components (pacman)
+  become: true
+  package:
+    name:
+      - ttf-jetbrains-mono
+      - ttf-cascadia-code
+      - ttf-liberation
+      - ttf-roboto
+      - ttf-ibm-plex
+      - inter-font
+      # - adobe-source-serif-fonts
+      - noto-fonts
+      - noto-fonts-cjk
+      - noto-fonts-emoji
+      # - ttf-jetbrains-mono-nerd
+      # - ttf-cascadia-code-nerd
+      - otf-geist-mono-nerd
+      - mpv
+      - lxqt-policykit
+      - pcmanfm-qt
+      - nautilus
+      - papers
+      # - firefox
+      # - chromium
+      - mesa
+      - libva-mesa-driver
+      - libva-utils
+      - vulkan-icd-loader
+      - vulkan-validation-layers
+      - vulkan-radeon
+      - nwg-bar
+      - nwg-look
+      - sway
+      - swaybg
+      - swayidle
+      - swaylock
+      - waybar
+      - niri
+      - dms-shell-niri
+      - matugen
+      - mako
+      - grim
+      - slurp
+      - wl-clipboard
+      - xdg-desktop-portal-gnome
+      - xdg-desktop-portal-wlr
+      - xdg-user-dirs
+      - ghostty
+      - xorg-xwayland
+      - fuzzel
+      - wlsunset
+      - shikane
+      - pipewire
+      - pipewire-pulse
+      - pipewire-jack
+      - pavucontrol
+      - pamixer
+      - geany
+      - zed
+      - featherpad
+      # - code
+      - libnotify
+      - keepassxc
+      - pop-gtk-theme
+      - papirus-icon-theme
+      - pop-gtk-theme
+      - qt5-wayland
+      - qt6-wayland
+      - qt6ct
+      - kvantum
+      - lxqt-archiver
+      - lximage-qt
+      - qt6-imageformats
+      - kimageformats
+      - qalculate-gtk
+      - udisks2
+      # - udiskie
+      - greetd
+      - greetd-tuigreet
+      - greetd-regreet
+      - wlr-randr
+    state: present
+
+- name: Install GUI-related components (AUR)
+  kewlfft.aur.aur:
+    name:
+      # - fonts-tlwg
+      - ttf-google-sans-code-vf
+      - brave-bin
+      - vscodium-bin
+    state: present
+
+- name: udisks2 Mount Options
+  become: true
+  community.general.ini_file:
+    path: "{{ udisk_mount_options_path }}"
+    mode: "0644"
+    section: defaults
+    option: "{{ item.key }}"
+    value: "{{ item.value }}"
+    no_extra_spaces: true
+    state: present
+  with_dict:
+    ext4_allow: errors=remount-ro,commit
+    ext4_defaults: "noatime,commit=30"
+    btrfs_defaults: "noatime,compress=zstd:1"
+    ntfs_defaults: "uid=$UID,gid=$GID,noatime,prealloc"
+
+- name: gsettings for gnome and gtk settings
+  shell: |
+    gsettings set org.gnome.desktop.privacy recent-files-max-age 0
+    gsettings set org.gnome.desktop.privacy remember-recent-files false
+    gsettings set org.gtk.Settings.FileChooser startup-mode "cwd"
+
+    gsettings set org.gnome.desktop.interface monospace-font-name "Google Sans Mono 11"
+    gsettings set org.gnome.desktop.thumbnail-cache maximum-size 0
+    gsettings set org.gnome.desktop.thumbnailers disable-all true
+
+    gsettings set org.gnome.nm-applet disable-connected-notifications true
+
+- name: Enable and start Ghostty background daemon
+  systemd:
+    name: app-com.mitchellh.ghostty.service
+    scope: user
+    state: started
+    enabled: true
+    masked: false
+
+- import_tasks: _setup_network.yml
+- import_tasks: _setup_bluetooth.yml
+
+- include_tasks: _setup_secret_pam.yml
+  loop:
+    - { module: "pam_gnome_keyring.so", pam_name: "login" }
+    - { module: "pam_gnome_keyring.so", pam_name: "greetd" }
+  loop_control:
+    loop_var: it
+
+- include_tasks: _setup_u2f_pam.yml
+
+- import_tasks: _setup_display_managers.yml

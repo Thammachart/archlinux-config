@@ -1,0 +1,36 @@
+---
+- name: Install TLP
+  become: true
+  package:
+    name:
+      - tlp
+    state: present
+- name: Mask systemd-rfkill Service and Socket
+  become: true
+  systemd:
+    name: "{{ item }}"
+    state: stopped
+    enabled: false
+    masked: true
+  loop:
+    - systemd-rfkill.service
+    - systemd-rfkill.socket
+- name: Create {{ tlp_config_directory }} directory if not exist
+  become: true
+  file:
+    path: "{{ tlp_config_directory }}"
+    state: directory
+    mode: 0755
+- name: Create tlp config file
+  become: true
+  template:
+    src: "tlp.conf.j2"
+    dest: "{{ tlp_config_directory }}/01-custom-tlp.conf"
+    mode: 0644
+- name: Enable tlp Service
+  become: true
+  systemd:
+    name: tlp
+    state: started
+    enabled: true
+    masked: false

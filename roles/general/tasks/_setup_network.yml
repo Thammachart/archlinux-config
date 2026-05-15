@@ -1,0 +1,69 @@
+---
+- name: Install Network Tools
+  become: true
+  package:
+    name:
+      - networkmanager
+      - iwd
+      - ldns
+      - nmap
+      - gping
+      - doggo
+      - traceroute
+      - firewalld
+      - curl
+      - curlie
+      - wget
+      - openssh
+    state: present
+
+- name: Enable NetworkManager Service
+  become: true
+  systemd:
+    name: NetworkManager
+    state: started
+    enabled: true
+    masked: false
+
+- name: Disable and mask NetworkManager-wait-online
+  become: true
+  systemd:
+    name: NetworkManager-wait-online.service
+    state: stopped
+    enabled: false
+    masked: true
+
+- name: Create {{ resolved_config_directory }} directory if not exist
+  become: true
+  file:
+    path: "{{ resolved_config_directory }}"
+    state: directory
+    mode: 0755
+- name: systemd-resolved DNSStubListenerExtra /w IPv6
+  become: true
+  template:
+    src: "resolved.conf.j2"
+    dest: "{{ resolved_config_directory }}/00-extra-stub.conf"
+    mode: 0644
+- name: Enable systemd-resolved Service
+  become: true
+  systemd:
+    name: systemd-resolved
+    state: started
+    enabled: true
+    masked: false
+- name: systemd-resolved /etc/resolv.conf symlink
+  become: true
+  file:
+    src: /run/systemd/resolve/stub-resolv.conf
+    dest: /etc/resolv.conf
+    state: link
+    force: true
+
+- name: Enable firewalld Service
+  become: true
+  systemd:
+    name: firewalld
+    state: started
+    enabled: true
+    masked: false

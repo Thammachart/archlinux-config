@@ -1,0 +1,32 @@
+---
+- name: Create Wayland Essentials for greetd
+  become: true
+  template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    mode: '{{ item.mode|default ("644") }}'
+  with_items:
+    - { src: "wayland-enablement.sh.j2", dest: "{{ wayland_enablement_path }}" }
+    - { src: "load-systemd-envs.sh.j2", dest: "{{ load_systemd_envs_path }}" }
+
+- name: Create & Configure greetd
+  become: true
+  template:
+    src: "greetd-config.toml.j2"
+    dest: "/etc/greetd/config.toml"
+    mode: "644"
+
+- name: Customize launchers
+  include_tasks: _customize_launcher.yml
+  loop:
+    - { cmp: niri, cmp_exec: "niri-session" }
+    - { cmp: sway, cmp_exec: "sway" }
+  loop_control:
+    loop_var: it
+
+- name: Enable greetd
+  become: true
+  systemd:
+    name: greetd
+    enabled: true
+    masked: false

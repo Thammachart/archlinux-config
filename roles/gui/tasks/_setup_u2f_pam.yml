@@ -1,0 +1,31 @@
+---
+- name: Set U2F Key Authentication for greetd
+  become: true
+  community.general.pamd:
+    name: greetd
+    type: auth
+    control: include
+    module_path: system-local-login
+    new_type: auth
+    new_control: sufficient
+    new_module_path: pam_u2f.so
+    module_arguments:
+      - cue
+      - origin=pam://{{ ansible_facts['hostname'] }}
+      - appid=pam://{{ ansible_facts['hostname'] }}
+    state: before
+# - name: Set U2F Key Authentication for gtklock
+#   become: true
+#   community.general.pamd:
+#     name: gtklock
+#     type: auth
+#     control: include
+#     module_path: login
+#     new_type: auth
+#     new_control: sufficient
+#     new_module_path: pam_u2f.so
+#     module_arguments:
+#       - cue
+#       - origin=pam://{{ ansible_hostname }}
+#       - appid=pam://{{ ansible_hostname }}
+#     state: before

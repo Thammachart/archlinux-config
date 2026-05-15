@@ -1,0 +1,42 @@
+---
+- name: Add groups to {{ ansible_facts['user_id'] }}
+  become: true
+  user:
+    name: "{{ ansible_facts['user_id'] }}"
+    groups:
+      - "{{ superuser_group }}"
+      - docker
+      - video
+    append: true
+- name: Register {{ superuser_group }} group to sudoers.d
+  become: true
+  lineinfile:
+    path: /etc/sudoers.d/00-{{ superuser_group }}-group
+    line: "%{{ superuser_group }} ALL=(ALL) NOPASSWD: ALL"
+    state: present
+    mode: 0440
+    create: true
+    validate: "visudo -cf %s"
+- name: Include sudoers.d if not present
+  become: true
+  lineinfile:
+    path: /etc/sudoers
+    line: "#includedir /etc/sudoers.d"
+    state: present
+    validate: "visudo -cf %s"
+# - name: Configure opendoas
+#   become: true
+#   lineinfile:
+#     path: /etc/doas.conf
+#     line: "permit nopass :{{ superuser_group }}"
+#     state: present
+#     owner: root
+#     group: root
+#     mode: 0400
+#     create: true
+#     validate: "doas -C %s"
+- name: Disable Root User
+  become: true
+  user:
+    name: root
+    password_lock: true

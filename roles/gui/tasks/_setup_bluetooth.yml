@@ -1,0 +1,25 @@
+---
+- name: Install Bluetooth components
+  become: true
+  package:
+    name:
+      - bluez
+      - bluez-utils
+      - blueman
+    state: present
+
+- name: Enable Bluetooth Service
+  become: true
+  systemd:
+    name: bluetooth
+    state: started
+    enabled: true
+    masked: false
+
+- name: Override blueman autostart in compositors
+  become: true
+  lineinfile:
+    path: /etc/xdg/autostart/blueman.desktop
+    line: "NotShowIn=niri;"
+    insertafter: EOF
+    state: present

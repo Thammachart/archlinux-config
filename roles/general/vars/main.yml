@@ -1,0 +1,23 @@
+---
+magicsysrq: 1
+default_locale: en_SG.UTF-8
+numeric_locale: en_SG.UTF-8
+language_locales: en_SG:en
+time_locale: en_DK.UTF-8
+tlp_config_directory: "/etc/tlp.d"
+journald_config_directory: "/etc/systemd/journald.conf.d"
+resolved_config_directory: "/etc/systemd/resolved.conf.d"
+timesyncd_config_directory: "/etc/systemd/timesyncd.conf.d"
+default_shell: nu
+ssh_directory: "{{ ansible_facts['env'].HOME }}/.ssh"
+ntp_client_systemd_service: "systemd-timesyncd.service"
+ntp_sources:
+  nimt:
+    [
+      "time1.nimt.or.th",
+      "time2.nimt.or.th",
+      "time3.nimt.or.th",
+      "time4.nimt.or.th",
+      "time5.nimt.or.th",
+    ]
+  ntp_pool: ["th.pool.ntp.org"]

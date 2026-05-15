@@ -1,0 +1,20 @@
+---
+- name: Get absolute path of {{ default_shell }}
+  shell: command -v {{ default_shell }}
+  register: shell_path
+  changed_when: false
+
+- name: Ensure {{ default_shell }} path is in /etc/shells
+  lineinfile:
+    name: /etc/shells
+    line: "{{ shell_path.stdout }}"
+    state: present
+  check_mode: true
+  register: presence
+  failed_when: presence.changed
+
+- name: "{{ default_shell }} as Default Shell"
+  become: true
+  user:
+    name: "{{ ansible_facts['user_id'] }}"
+    shell: "{{ shell_path.stdout }}"

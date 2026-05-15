@@ -1,0 +1,168 @@
+---
+- name: Mark laptop-like machines
+  set_fact:
+    is_laptop: "{{ ansible_facts['form_factor'] in ['Laptop', 'Notebook', 'Portable'] }}"
+# - name: Generate Config for Home Dotfiles
+#   template:
+#     src: "dotfiles-config.yml.j2"
+#     dest: "{{ playbook_dir }}/../.chezmoidata/config.yml"
+
+- name: Enable Pacman Parallel Download
+  become: true
+  lineinfile:
+    path: /etc/pacman.conf
+    regexp: "^#ParallelDownloads.*$"
+    line: "ParallelDownloads = 5"
+    state: present
+  when: ansible_facts["os_family"] == "Archlinux"
+
+- name: Install necessities
+  become: true
+  package:
+    name:
+      - base
+      - base-devel
+      - linux-zen
+      - linux-firmware
+      - sudo
+      # - opendoas
+      - btrfs-progs
+      - git
+      - lazygit
+      - vim
+      - ripgrep
+      - neovim
+      - helix
+      - polkit
+      - python
+      - python-pip
+      - python-psutil
+      - man-db
+      - htop
+      - btop
+      - nushell
+      - zsh
+      - chezmoi
+      - starship
+      # - lsd
+      - jq
+      - go-yq
+      # - gnupg
+
+      ## Modern Unix
+      - bat
+      - duf
+
+      # - java-runtime-common
+      # - java-environment-common
+      # - go
+      # - rustup
+      # - nodejs-lts-iron
+      # - yarn
+      # - pnpm
+      - docker
+      - docker-compose
+      - podman
+      # - tlp
+      - terminus-font
+      - p7zip
+      - unzip
+      # - power-profiles-daemon
+      - lshw
+      - pam-u2f
+      - gnome-keyring
+    state: present
+
+- name: Install AUR Helper
+  kewlfft.aur.aur:
+    name: yay-bin
+    state: present
+    #skip_installed: true
+    #
+
+- name: Install necessities (AUR)
+  become: true
+  kewlfft.aur.aur:
+    name:
+      - carapace-bin
+
+- name: Import Privileges Tasks
+  import_tasks: _privileges.yml
+
+- name: Import journald Tasks
+  import_tasks: _journald.yml
+
+- import_tasks: _setup_network.yml
+
+- name: Import Time Tasks
+  import_tasks: _time.yml
+
+- name: Set hostname {{ inventory_hostname }}
+  hostname:
+    name: "{{ inventory_hostname }}"
+    use: systemd
+
+- name: Enable Magic SysRq = {{ magicsysrq }}
+  become: true
+  lineinfile:
+    path: /etc/sysctl.d/99-magic-sysrq.conf
+    line: "kernel.sysrq = {{ magicsysrq }}"
+    state: present
+    create: true
+
+# - name: Install AUR Components
+#   kewlfft.aur.aur:
+#     name:
+#       - fnm-bin
+#       - jdk17-temurin
+#     state: present
+
+- name: Enable fstrim Timer
+  become: true
+  systemd:
+    name: fstrim.timer
+    enabled: true
+    masked: false
+- name: Set Linux Console Default Bitmap font
+  become: true
+  lineinfile:
+    path: /etc/vconsole.conf
+    line: "FONT=ter-u28n"
+    state: present
+    create: true
+- name: Ensure Locale exists
+  become: true
+  community.general.locale_gen:
+    name: "{{ item }}"
+    state: present
+  loop:
+    - "{{ default_locale }}"
+    - en_US.UTF-8
+    - en_DK.UTF-8
+    - th_TH.UTF-8
+- name: Locale Setting
+  become: true
+  lineinfile:
+    path: /etc/locale.conf
+    regexp: "^#? *{{ item.key | regex_escape() }}="
+    line: "{{ item.key }}={{ item.value }}"
+    state: present
+    create: true
+  with_dict:
+    "LANG": "{{ default_locale }}"
+    "LANGUAGE": "{{ language_locales }}"
+    "LC_NUMERIC": "{{ numeric_locale }}"
+    "LC_TIME": "{{ time_locale }}"
+
+# - name: Ensure Rustup Stable Toolchain is installed
+#   shell: rustup install stable
+
+- name: Import Shell Tasks
+  import_tasks: _shell.yml
+
+- name: Import SSH Tasks
+  import_tasks: _ssh.yml
+
+- name: Import Laptop Tasks
+  import_tasks: _laptop.yml
+  when: is_laptop | bool

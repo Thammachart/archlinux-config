@@ -1,0 +1,14 @@
+---
+- name: Create ssh directory
+  file:
+    name: "{{ ssh_directory }}"
+    state: directory
+    mode: 0700
+- name: Create Personal KeyPair
+  openssh_keypair:
+    path: "{{ ssh_directory }}/id_ed25519"
+    type: ed25519
+- name: Create SSH Config file
+  copy:
+    src: ssh_config
+    dest: "{{ ssh_directory }}/config"
