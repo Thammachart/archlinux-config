@@ -22,11 +22,12 @@
     name:
       - base
       - base-devel
-      - linux-zen
+      - "{{ kernel_used }}"
       - linux-firmware
       - sudo
       # - opendoas
       - btrfs-progs
+      - kernel-modules-hook
       - git
       - lazygit
       - vim
@@ -91,6 +92,8 @@
 
 - name: Import journald Tasks
   import_tasks: _journald.yml
+
+- import_tasks: _setup_booting.yml
 
 - import_tasks: _setup_network.yml
 

@@ -1,0 +1,5 @@
+rw
+root=/dev/mapper/crypted-archlinux
+rootflags=subvol=@
+rd.luks.name={{ luks_uuid }}=crypted-archlinux
+rd.luks.options={{ luks_uuid }}=tpm2-device=auto,tpm2-measure-pcr=yes

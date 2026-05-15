@@ -1,5 +1,8 @@
 ---
 magicsysrq: 1
+kernel_used: linux-zen
+luks_uuid: "{{ ansible_facts['device_links']['uuids']['nvme0n1p2'][0] }}" # Replace with the block UUID (blkid)
+efi_mount: "/boot"
 default_locale: en_SG.UTF-8
 numeric_locale: en_SG.UTF-8
 language_locales: en_SG:en

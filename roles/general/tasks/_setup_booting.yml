@@ -1,0 +1,54 @@
+---
+- name: Configure UKI and TPM2 LUKS Decryption for {{ kernel_used }}
+  become: true
+  vars:
+    luks_uuid: "{{ ansible_facts['device_links']['uuids']['nvme0n1p2'][0] }}" # Replace with the block UUID (blkid)
+    efi_mount: "/boot"
+  block:
+    - name: Update mkinitcpio HOOKS for systemd and sd-encrypt
+      lineinfile:
+        path: /etc/mkinitcpio.conf
+        regexp: "^HOOKS="
+        line: "HOOKS=(base systemd autodetect microcode modconf kms keyboard sd-vconsole block sd-encrypt filesystems fsck)"
+        backup: true
+      notify:
+        - Rebuild mkinitcpio
+    - name: Ensure TPM modules are loaded early (Optional but recommended)
+      lineinfile:
+        path: /etc/mkinitcpio.conf
+        regexp: "^MODULES="
+        line: "MODULES=(tpm tpm_tis tpm_crb)"
+      notify:
+        - Rebuild mkinitcpio
+    - name: Configure UKI paths in {{ kernel_used }}.preset
+      lineinfile:
+        path: /etc/mkinitcpio.d/{{ kernel_used }}.preset
+        regexp: "^{{ item.key }}="
+        line: '{{ item.key }}="{{ item.value }}"'
+        backup: true
+      notify:
+        - Rebuild mkinitcpio
+      loop:
+        - {
+            key: "default_uki",
+            value: "{{ efi_mount }}/EFI/Linux/arch-{{ kernel_used }}.efi",
+          }
+    - name: Ensure /etc/cmdline.d directory exists
+      file:
+        path: /etc/cmdline.d
+        state: directory
+        mode: "755"
+    - name: Configure UKI kernel command line for TPM2 LUKS
+      template:
+        src: luks-root.conf.j2
+        dest: /etc/cmdline.d/root.conf
+        mode: "644"
+      notify:
+        - Rebuild mkinitcpio
+
+- name: Enable systemd-boot automatic update
+  become: true
+  systemd:
+    name: systemd-boot-update.service
+    enabled: true
+    masked: false
