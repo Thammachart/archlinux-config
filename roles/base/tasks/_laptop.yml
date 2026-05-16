@@ -20,13 +20,15 @@
   file:
     path: "{{ tlp_config_directory }}"
     state: directory
-    mode: 0755
+    mode: "755"
 - name: Create tlp config file
   become: true
   template:
     src: "tlp.conf.j2"
     dest: "{{ tlp_config_directory }}/01-custom-tlp.conf"
-    mode: 0644
+    mode: "644"
+  vars:
+    stop: "{{ '60' if 'ASUS' in ansible_facts['chassis_vendor'] else '80' }}"
 - name: Enable tlp Service
   become: true
   systemd:

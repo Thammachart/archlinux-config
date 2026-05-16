@@ -1,0 +1,15 @@
+---
+- name: Install packages
+  become: true
+  package:
+    name:
+      - filezilla
+      - libreoffice-fresh
+    state: present
+- name: Install packages (AUR)
+  become: true
+  package:
+    name:
+      - google-cloud-cli
+      - netbird-bin
+    state: present

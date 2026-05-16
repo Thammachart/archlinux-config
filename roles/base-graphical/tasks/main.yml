@@ -101,11 +101,13 @@
     value: "{{ item.value }}"
     no_extra_spaces: true
     state: present
-  with_dict:
-    ext4_allow: errors=remount-ro,commit
-    ext4_defaults: "noatime,commit=30"
-    btrfs_defaults: "noatime,compress=zstd:1"
-    ntfs_defaults: "uid=$UID,gid=$GID,noatime,prealloc"
+  loop: "{{ fs | dict2items }}"
+  vars:
+    fs:
+      ext4_allow: errors=remount-ro,commit
+      ext4_defaults: "noatime,commit=30"
+      btrfs_defaults: "noatime,compress=zstd:1"
+      ntfs_defaults: "uid=$UID,gid=$GID,noatime,prealloc"
 
 - name: gsettings for gnome and gtk settings
   shell: |

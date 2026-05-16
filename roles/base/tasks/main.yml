@@ -36,9 +36,6 @@
       - neovim
       - helix
       - polkit
-      - python
-      - python-pip
-      - python-psutil
       - man-db
       - htop
       - btop
@@ -62,14 +59,9 @@
       # - nodejs-lts-iron
       # - yarn
       # - pnpm
-      - docker
-      - docker-compose
-      - podman
-      # - tlp
       - terminus-font
       - p7zip
       - unzip
-      # - power-profiles-daemon
       - lshw
       - pam-u2f
       - gnome-keyring

@@ -1,5 +1,7 @@
 - name: Setup local workstation
-  hosts: local
+  hosts: asiantuntija-orbit
   roles:
     - base
     - base-graphical
+    - dev
+    - personal

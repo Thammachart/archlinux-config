@@ -41,7 +41,7 @@
     - name: Configure UKI kernel command line for TPM2 LUKS
       template:
         src: luks-root.conf.j2
-        dest: /etc/cmdline.d/root.conf
+        dest: /etc/cmdline.d/00-root.conf
         mode: "644"
       notify:
         - Rebuild mkinitcpio

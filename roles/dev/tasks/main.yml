@@ -1,0 +1,14 @@
+---
+- name: Install Tools
+  become: true
+  package:
+    name:
+      - docker
+      - docker-compose
+      - podman
+      - distrobox
+      - gcc
+      - rustup
+      - python
+      - python-pip
+    state: present
