@@ -28,6 +28,7 @@
       # - opendoas
       - btrfs-progs
       - kernel-modules-hook
+      - fwupd
       - git
       - lazygit
       - vim

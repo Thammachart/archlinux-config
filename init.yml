@@ -1,5 +1,5 @@
 - name: Setup local workstation
   hosts: local
   roles:
-    - general
-    - gui
+    - base
+    - base-graphical
