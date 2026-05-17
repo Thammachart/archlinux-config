@@ -75,10 +75,10 @@
     #
 
 - name: Install necessities (AUR)
-  become: true
   kewlfft.aur.aur:
     name:
       - carapace-bin
+    state: present
 
 - name: Import Privileges Tasks
   import_tasks: _privileges.yml

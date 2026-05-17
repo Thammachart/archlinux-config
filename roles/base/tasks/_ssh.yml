@@ -3,7 +3,7 @@
   file:
     name: "{{ ssh_directory }}"
     state: directory
-    mode: 0700
+    mode: "700"
 - name: Create Personal KeyPair
   openssh_keypair:
     path: "{{ ssh_directory }}/id_ed25519"

@@ -5,7 +5,7 @@
     name: "{{ ansible_facts['user_id'] }}"
     groups:
       - "{{ superuser_group }}"
-      - docker
+      # - docker
       - video
     append: true
 - name: Register {{ superuser_group }} group to sudoers.d
@@ -14,7 +14,7 @@
     path: /etc/sudoers.d/00-{{ superuser_group }}-group
     line: "%{{ superuser_group }} ALL=(ALL) NOPASSWD: ALL"
     state: present
-    mode: 0440
+    mode: "440"
     create: true
     validate: "visudo -cf %s"
 - name: Include sudoers.d if not present
