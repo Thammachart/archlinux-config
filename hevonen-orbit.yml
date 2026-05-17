@@ -1,9 +1,10 @@
 - name: Setup local workstation
   hosts: hevonen-orbit
-  vars:
-    _arch_chroot: false
   roles:
-    - base
-    - base-graphical
-    - dev
-    - work
+    - role: base
+    - role: base-graphical
+      when: not ansible_facts['is_chroot']
+    - role: dev
+      when: not ansible_facts['is_chroot']
+    - role: work
+      when: not ansible_facts['is_chroot']

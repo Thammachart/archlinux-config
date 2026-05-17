@@ -1,7 +1,5 @@
 - name: Setup local workstation
   hosts: asiantuntija-orbit
-  vars:
-    _arch_chroot: false
   roles:
     - base
     - base-graphical

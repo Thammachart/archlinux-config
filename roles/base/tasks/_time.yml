@@ -21,4 +21,4 @@
     state: started
     enabled: true
     masked: false
-  when: not _arch_chroot
+  when: not ansible_facts['is_chroot']

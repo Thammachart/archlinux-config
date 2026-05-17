@@ -5,6 +5,7 @@
     name:
       - tlp
     state: present
+
 - name: Mask systemd-rfkill Service and Socket
   become: true
   systemd:
@@ -15,12 +16,15 @@
   loop:
     - systemd-rfkill.service
     - systemd-rfkill.socket
+  when: not ansible_facts['is_chroot']
+
 - name: Create {{ tlp_config_directory }} directory if not exist
   become: true
   file:
     path: "{{ tlp_config_directory }}"
     state: directory
     mode: "755"
+
 - name: Create tlp config file
   become: true
   template:
@@ -29,6 +33,7 @@
     mode: "644"
   vars:
     stop: "{{ '60' if 'ASUS' in ansible_facts['chassis_vendor'] else '80' }}"
+
 - name: Enable tlp Service
   become: true
   systemd:
@@ -36,3 +41,4 @@
     state: started
     enabled: true
     masked: false
+  when: not ansible_facts['is_chroot']
