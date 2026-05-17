@@ -12,3 +12,10 @@
       - python
       - python-pip
     state: present
+- name: Enable docker.socket
+  become: true
+  systemd:
+    name: docker.socket
+    state: started
+    enabled: true
+    masked: false
