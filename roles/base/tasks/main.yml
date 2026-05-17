@@ -119,7 +119,7 @@
     name: fstrim.timer
     enabled: true
     masked: false
-  when: not ansible_facts['is_chroot']
+  when: not _arch_chroot
 
 - name: Set Linux Console Default Bitmap font
   become: true

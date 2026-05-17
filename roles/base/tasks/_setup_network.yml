@@ -54,7 +54,7 @@
     state: started
     enabled: true
     masked: false
-  when: not ansible_facts['is_chroot']
+  when: not _arch_chroot
 
 - name: systemd-resolved /etc/resolv.conf symlink
   become: true
@@ -63,7 +63,7 @@
     dest: /etc/resolv.conf
     state: link
     force: true
-  when: not ansible_facts['is_chroot']
+  when: not _arch_chroot
 
 - name: Enable firewalld Service
   become: true
@@ -72,4 +72,4 @@
     state: started
     enabled: true
     masked: false
-  when: not ansible_facts['is_chroot']
+  when: not _arch_chroot
