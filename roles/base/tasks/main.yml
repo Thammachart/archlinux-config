@@ -119,6 +119,8 @@
     name: fstrim.timer
     enabled: true
     masked: false
+  when: not ansible_facts['is_chroot']
+
 - name: Set Linux Console Default Bitmap font
   become: true
   lineinfile:
@@ -126,6 +128,7 @@
     line: "FONT=ter-u28n"
     state: present
     create: true
+
 - name: Ensure Locale exists
   become: true
   community.general.locale_gen:
@@ -136,6 +139,7 @@
     - en_US.UTF-8
     - en_DK.UTF-8
     - th_TH.UTF-8
+
 - name: Locale Setting
   become: true
   lineinfile:
@@ -144,11 +148,13 @@
     line: "{{ item.key }}={{ item.value }}"
     state: present
     create: true
-  with_dict:
-    "LANG": "{{ default_locale }}"
-    "LANGUAGE": "{{ language_locales }}"
-    "LC_NUMERIC": "{{ numeric_locale }}"
-    "LC_TIME": "{{ time_locale }}"
+  loop: "{{ envvars | dict2items }}"
+  vars:
+    envvars:
+      "LANG": "{{ default_locale }}"
+      "LANGUAGE": "{{ language_locales }}"
+      "LC_NUMERIC": "{{ numeric_locale }}"
+      "LC_TIME": "{{ time_locale }}"
 
 # - name: Ensure Rustup Stable Toolchain is installed
 #   shell: rustup install stable

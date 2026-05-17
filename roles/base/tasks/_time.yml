@@ -1,9 +1,11 @@
+---
 - name: Create {{ timesyncd_config_directory }} directory if not exist
   become: true
   file:
     path: "{{ timesyncd_config_directory }}"
     state: directory
-    mode: 0755
+    mode: "755"
+
 - name: Setup NTP Sources
   become: true
   template:
@@ -11,6 +13,7 @@
     dest: "{{ timesyncd_config_directory }}/00-servers.conf"
   notify:
     - Restart {{ ntp_client_systemd_service }}
+
 - name: Enable {{ ntp_client_systemd_service }}
   become: true
   systemd:
@@ -18,3 +21,4 @@
     state: started
     enabled: true
     masked: false
+  when: not ansible_facts['is_chroot']

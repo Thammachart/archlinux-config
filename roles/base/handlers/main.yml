@@ -3,6 +3,7 @@
   systemd:
     name: "{{ ntp_client_systemd_service }}"
     state: restarted
+  when: not ansible_facts['is_chroot']
 
 - name: Rebuild mkinitcpio
   become: true
