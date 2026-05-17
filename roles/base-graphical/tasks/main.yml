@@ -134,12 +134,3 @@
     gsettings set org.gnome.desktop.thumbnailers disable-all true
 
     gsettings set org.gnome.nm-applet disable-connected-notifications true
-
-- name: Enable and start Ghostty background daemon
-  systemd:
-    name: app-com.mitchellh.ghostty.service
-    scope: user
-    state: started
-    enabled: true
-    masked: false
-  ignore_errors: true
