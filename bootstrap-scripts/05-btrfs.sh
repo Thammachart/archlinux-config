@@ -1,6 +1,7 @@
 set -e
 
-PAR=$1
+BOOT_PAR=$1
+PAR=$2
 BTRFS_O=noatime,commit=120,compress=zstd:1
 MAPPER_NAME=crypted-archlinux
 MAP=/dev/mapper/$MAPPER_NAME
@@ -44,3 +45,6 @@ mount -o $BTRFS_O,subvol=@opt $MAP /mnt/opt
 mount -o $BTRFS_O,subvol=@tmp $MAP /mnt/tmp
 mount -o $BTRFS_O,subvol=@.snapshots $MAP /mnt/.snapshots
 mount -o $BTRFS_O,subvol=@data $MAP /mnt/data
+
+# mount esp
+mount -o defaults,noatime,umask=0077,dmask=022,fmask=033 $BOOT_PAR /mnt/boot
