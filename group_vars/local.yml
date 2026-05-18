@@ -22,6 +22,6 @@ config_data:
         ui_monospace: "Google Sans Code"
         terminal_monospace: "GeistMono Nerd Font"
       thai:
-        sans: "Noto Sans Thai"
+        sans: "Noto Sans Thai Looped"
         serif: "Noto Serif Thai"
         monospace: "Noto Serif Thai"
