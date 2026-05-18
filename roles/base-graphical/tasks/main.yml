@@ -75,6 +75,7 @@
       - kimageformats
       - qalculate-gtk
       - udisks2
+      - gnome-disk-utility
       # - udiskie
       - greetd
       - greetd-tuigreet
