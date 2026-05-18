@@ -5,3 +5,5 @@
     - base-graphical
     - dev
     - personal
+    - role: cleanup
+      when: not ansible_facts['is_chroot']

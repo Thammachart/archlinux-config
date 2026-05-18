@@ -8,3 +8,5 @@
       when: not ansible_facts['is_chroot']
     - role: work
       when: not ansible_facts['is_chroot']
+    - role: cleanup
+      when: not ansible_facts['is_chroot']

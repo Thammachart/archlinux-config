@@ -16,6 +16,13 @@
     dest: "/etc/greetd/config.toml"
     mode: "644"
 
+- name: Regreet Config
+  become: true
+  template:
+    src: greetd-regreet-config.toml.j2
+    dest: "/etc/greetd/regreet-config.toml"
+    mode: "644"
+
 - name: Customize launchers
   include_tasks: _customize_launcher.yml
   loop:

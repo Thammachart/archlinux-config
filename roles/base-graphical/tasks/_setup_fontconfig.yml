@@ -1,0 +1,19 @@
+---
+- name: Apple custom fontconfig
+  become: true
+  vars:
+    fonts: "{{ config_data['linux']['fonts'] }}"
+  template:
+    src: custom_fontconfig.conf.j2
+    dest: /usr/share/fontconfig/conf.avail/99-custom.conf
+    mode: "644"
+  register: fc
+
+- name: Symlink custom config
+  become: true
+  file:
+    src: "{{ fc.dest }}"
+    dest: /etc/fonts/conf.d/99-custom.conf
+    state: link
+  notify:
+    - Rebuild Font Cache

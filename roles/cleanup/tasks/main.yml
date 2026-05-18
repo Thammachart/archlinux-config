@@ -1,0 +1,7 @@
+---
+- name: Remove some packages
+  become: true
+  package:
+    name:
+      - greetd-tuigreet
+    state: absent

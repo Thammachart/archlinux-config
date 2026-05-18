@@ -90,8 +90,7 @@
 
 - import_tasks: _setup_network.yml
 
-- name: Import Time Tasks
-  import_tasks: _time.yml
+- import_tasks: _setup_time.yml
 
 - name: Set hostname {{ inventory_hostname }}
   hostname:
