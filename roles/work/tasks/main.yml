@@ -12,3 +12,10 @@
       - google-cloud-cli
       - netbird-bin
     state: present
+- name: Enable netbird socket
+  become: true
+  systemd:
+    name: netbird@main.service
+    state: started
+    enabled: true
+    masked: false
