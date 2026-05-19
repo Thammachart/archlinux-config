@@ -16,7 +16,7 @@ config_data:
     fonts:
       latin:
         ui: "Inter Display"
-        sans: "Inter Display"
+        sans: "Roboto"
         serif: "Noto Serif"
         monospace: "Google Sans Code"
         ui_monospace: "Google Sans Code"

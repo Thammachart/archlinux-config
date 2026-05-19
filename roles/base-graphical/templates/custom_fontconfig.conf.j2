@@ -44,7 +44,7 @@
       <string>Helvetica Neue</string>
     </test>
     <edit binding="same" mode="assign" name="family">
-      <string>Liberation Sans</string>
+      <string>system</string>
     </edit>
   </match>
   <match target="pattern">
@@ -52,7 +52,7 @@
       <string>Helvetica</string>
     </test>
     <edit binding="same" mode="assign" name="family">
-      <string>Liberation Sans</string>
+      <string>system</string>
     </edit>
   </match>
   <match target="pattern">
@@ -84,7 +84,7 @@
       <string>Menlo</string>
     </test>
     <edit binding="same" mode="assign" name="family">
-      <string>JetBrains Mono</string>
+      <string>{{ fonts.latin.monospace }}</string>
     </edit>
   </match>
   <!-- Preferred fonts for Simplified Chinese -->
@@ -256,6 +256,9 @@
     </test>
     <edit name="family" mode="append" binding="same">
       <string>{{ fonts.latin.monospace }}</string>
+      <string>Roboto Mono</string>
+      <string>JetBrains Mono</string>
+      <string>Noto Sans Mono</string>
       <string>Liberation Mono</string>
       <string>{{ fonts.thai.monospace }}</string>
       <string>Noto Sans Math</string>
@@ -267,6 +270,7 @@
     </test>
     <edit name="family" mode="prepend" binding="strong">
       <string>{{ fonts.latin.ui_monospace }}</string>
+      <string>Roboto Mono</string>
       <string>JetBrains Mono</string>
       <string>Noto Sans Mono</string>
       <string>Liberation Mono</string>
@@ -281,24 +285,9 @@
     </test>
     <edit name="family" mode="prepend" binding="strong">
       <string>{{ fonts.latin.ui }}</string>
+      <string>Roboto</string>
       <string>Ubuntu</string>
       <string>Liberation Sans</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>Cascadia Code PL</string>
-    </test>
-    <edit name="family" mode="append" binding="strong">
-      <string>CaskaydiaCove Nerd Font</string>
-    </edit>
-  </match>
-  <match target="pattern">
-    <test qual="any" name="family">
-      <string>Cascadia Mono PL</string>
-    </test>
-    <edit name="family" mode="append" binding="strong">
-      <string>CaskaydiaCove Nerd Font</string>
     </edit>
   </match>
   <match target="pattern">

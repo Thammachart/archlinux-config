@@ -3,26 +3,13 @@
   become: true
   package:
     name:
-      - ttf-jetbrains-mono
-      - ttf-cascadia-code
-      - ttf-liberation
-      - ttf-roboto
-      - ttf-ibm-plex
-      - inter-font
-      # - adobe-source-serif-fonts
-      - noto-fonts
-      - noto-fonts-cjk
-      - noto-fonts-emoji
-      # - ttf-jetbrains-mono-nerd
-      # - ttf-cascadia-code-nerd
-      - otf-geist-mono-nerd
+      # - firefox
+      # - chromium
       - mpv
       - lxqt-policykit
       - pcmanfm-qt
       - nautilus
       - papers
-      # - firefox
-      # - chromium
       - mesa
       - libva-mesa-driver
       - libva-utils
@@ -125,15 +112,3 @@
       ext4_defaults: "noatime,commit=30"
       btrfs_defaults: "noatime,compress=zstd:1"
       ntfs_defaults: "uid=$UID,gid=$GID,noatime,prealloc"
-
-- name: gsettings for gnome and gtk settings
-  shell: |
-    gsettings set org.gnome.desktop.privacy recent-files-max-age 0
-    gsettings set org.gnome.desktop.privacy remember-recent-files false
-    gsettings set org.gtk.Settings.FileChooser startup-mode "cwd"
-
-    gsettings set org.gnome.desktop.interface monospace-font-name "Google Sans Mono 11"
-    gsettings set org.gnome.desktop.thumbnail-cache maximum-size 0
-    gsettings set org.gnome.desktop.thumbnailers disable-all true
-
-    gsettings set org.gnome.nm-applet disable-connected-notifications true
