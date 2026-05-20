@@ -9,7 +9,6 @@
 - name: Install packages (AUR)
   kewlfft.aur.aur:
     name:
-      - google-cloud-cli
       - netbird-bin
     state: present
 - name: Enable netbird socket
