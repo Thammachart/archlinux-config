@@ -39,11 +39,12 @@
       - man-db
       - htop
       - btop
+      - fish
       - nushell
       - zsh
       - chezmoi
       - starship
-      # - lsd
+      - lsd
       - jq
       - go-yq
       # - gnupg
@@ -159,8 +160,7 @@
 # - name: Ensure Rustup Stable Toolchain is installed
 #   shell: rustup install stable
 
-- name: Import Shell Tasks
-  import_tasks: _shell.yml
+- import_tasks: _setup_shell.yml
 
 - name: Import SSH Tasks
   import_tasks: _ssh.yml

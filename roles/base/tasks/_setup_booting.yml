@@ -13,13 +13,13 @@
         backup: true
       notify:
         - Rebuild mkinitcpio
-    - name: Ensure TPM modules are loaded early (Optional but recommended)
-      lineinfile:
-        path: /etc/mkinitcpio.conf
-        regexp: "^MODULES="
-        line: "MODULES=(tpm tpm_tis tpm_crb)"
-      notify:
-        - Rebuild mkinitcpio
+    # - name: Ensure TPM modules are loaded early (Optional but recommended)
+    #   lineinfile:
+    #     path: /etc/mkinitcpio.conf
+    #     regexp: "^MODULES="
+    #     line: "MODULES=(tpm tpm_tis tpm_crb)"
+    #   notify:
+    #     - Rebuild mkinitcpio
     - name: Configure UKI paths in {{ kernel_used }}.preset
       lineinfile:
         path: /etc/mkinitcpio.d/{{ kernel_used }}.preset
