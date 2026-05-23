@@ -1,7 +1,10 @@
 ---
-- name: Remove some packages
+- name: Remove gnome-keyring PAM module
   become: true
-  package:
-    name:
-      - greetd-tuigreet
+  ansible.builtin.lineinfile:
+    path: "/etc/pam.d/{{ item }}"
+    regexp: "pam_gnome_keyring.so"
     state: absent
+  loop:
+    - login
+    - greetd

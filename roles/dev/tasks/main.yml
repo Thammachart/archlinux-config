@@ -7,8 +7,10 @@
       - docker-compose
       - podman
       - distrobox
+      - direnv
       - gcc
       - rustup
+      - go
       - python
       - python-pip
     state: present

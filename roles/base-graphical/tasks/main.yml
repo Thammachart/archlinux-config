@@ -82,12 +82,12 @@
 - import_tasks: _setup_network.yml
 - import_tasks: _setup_bluetooth.yml
 
-- include_tasks: _setup_secret_pam.yml
-  loop:
-    - { module: "pam_gnome_keyring.so", pam_name: "login" }
-    - { module: "pam_gnome_keyring.so", pam_name: "greetd" }
-  loop_control:
-    loop_var: it
+# - include_tasks: _setup_secret_pam.yml
+#   loop:
+#     - { module: "pam_gnome_keyring.so", pam_name: "login" }
+#     - { module: "pam_gnome_keyring.so", pam_name: "greetd" }
+#   loop_control:
+#     loop_var: it
 
 - import_tasks: _setup_fontconfig.yml
 
