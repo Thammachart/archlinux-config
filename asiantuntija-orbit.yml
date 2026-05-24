@@ -1,9 +1,19 @@
 - name: Setup local workstation
   hosts: asiantuntija-orbit
   roles:
-    - base
-    - base-graphical
-    - dev
-    - personal
+    - role: base
+
+    - role: base-graphical
+      when: not ansible_facts['is_chroot']
+
+    - role: base-secureboot
+      when: not ansible_facts['is_chroot']
+
+    - role: dev
+      when: not ansible_facts['is_chroot']
+
+    - role: personal
+      when: not ansible_facts['is_chroot']
+
     - role: cleanup
       when: not ansible_facts['is_chroot']

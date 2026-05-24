@@ -2,11 +2,18 @@
   hosts: hevonen-orbit
   roles:
     - role: base
+
     - role: base-graphical
       when: not ansible_facts['is_chroot']
+
+    - role: base-secureboot
+      when: not ansible_facts['is_chroot']
+
     - role: dev
       when: not ansible_facts['is_chroot']
+
     - role: work
       when: not ansible_facts['is_chroot']
+
     - role: cleanup
       when: not ansible_facts['is_chroot']

@@ -1,0 +1,20 @@
+---
+- name: Sign and track UKI + EFI files
+  become: true
+  command: "sbctl sign --save {{ item }}"
+  loop: "{{ sign_files }}"
+  register: sign_result
+  changed_when: "'File has already been signed' not in (sign_result.stdout | default(''))"
+  failed_when:
+    - sign_result.rc != 0
+    - "'File has already been signed' not in (sign_result.stdout | default(''))"
+
+- name: Sign binaries for automatic update
+  become: true
+  command:
+    cmd: |
+      sbctl sign --save
+        --output {{ item }}.signed
+        {{ item }}
+    creates: "{{ item }}.signed"
+  loop: "{{ signed_binaries }}"

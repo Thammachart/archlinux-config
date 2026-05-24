@@ -24,7 +24,6 @@
       - base-devel
       - "{{ kernel_used }}"
       - linux-firmware
-      - sbctl
       - sudo
       # - opendoas
       - btrfs-progs

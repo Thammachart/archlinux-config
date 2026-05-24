@@ -1,0 +1,9 @@
+---
+sign_files:
+  - /boot/EFI/BOOT/BOOTX64.EFI
+  - /boot/EFI/Linux/arch-linux-zen.efi
+  - /boot/EFI/systemd/systemd-bootx64.efi
+
+signed_binaries:
+  - /usr/lib/systemd/boot/efi/systemd-bootx64.efi
+  - /usr/lib/fwupd/efi/fwupdx64.efi

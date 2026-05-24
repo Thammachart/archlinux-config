@@ -1,0 +1,10 @@
+---
+- name: Create keys
+  become: true
+  command: sbctl create-keys
+  changed_when: true
+
+- name: Enroll keys to EFI (with Microsoft certs)
+  become: true
+  command: sbctl enroll-keys --microsoft
+  changed_when: true

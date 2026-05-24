@@ -1,0 +1,31 @@
+---
+- name: Install sbctl
+  become: true
+  package:
+    name:
+      - sbctl
+    state: present
+
+- name: Get sbctl status
+  become: true
+  command: sbctl status --json
+  register: sbctl_status_raw
+  changed_when: false
+
+- name: Parse sbctl status
+  set_fact:
+    sbctl_status: "{{ sbctl_status_raw.stdout | from_json }}"
+
+- name: Check if sbctl keys already exist
+  become: true
+  stat:
+    path: /var/lib/sbctl/keys/db/db.pem
+  register: sbctl_keys_stat
+
+- include_tasks: _manage_setup_mode.yml
+  when:
+    - sbctl_status.setup_mode | default(false)
+    - not sbctl_status.installed
+    - not sbctl_keys_stat.stat.exists
+
+- import_tasks: _manage_signing.yml
