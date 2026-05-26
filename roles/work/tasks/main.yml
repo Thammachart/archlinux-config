@@ -12,6 +12,7 @@
   kewlfft.aur.aur:
     name:
       - netbird-bin
+      - google-cloud-cli
     state: present
 - name: Enable netbird socket
   become: true
