@@ -3,6 +3,7 @@
   become: true
   package:
     name:
+      - fnm
       - filezilla
       - libreoffice-fresh
     state: present
