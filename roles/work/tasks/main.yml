@@ -4,6 +4,8 @@
   package:
     name:
       - fnm
+      - bun
+      - pulumi
       - biome
       - filezilla
       - libreoffice-fresh
