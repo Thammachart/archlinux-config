@@ -4,6 +4,7 @@
   package:
     name:
       - fnm
+      - biome
       - filezilla
       - libreoffice-fresh
     state: present
