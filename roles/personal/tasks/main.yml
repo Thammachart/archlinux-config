@@ -8,6 +8,7 @@
       - yt-dlp
       - qbittorrent
       - aria2
+      - signal-desktop
     state: present
 - name: Install package (AUR)
   become: true
